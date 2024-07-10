@@ -33,3 +33,23 @@ const checkConntest = new Promise(async resolve => {
     const f = await fetch("http://conntest.pretendo.cc").catch(() => resolve(false));
     resolve(f.status >= 200 && f.status <= 399);
 });
+
+/**
+ * Checks the Juxt website availability.
+ * 
+ * @returns {boolean} Whether the Juxt website is available.
+ */
+const checkJuxtWeb = new Promise(async resolve => {
+    const f = await fetch("https://juxt.pretendo.network/").catch(() => resolve(false));
+    resolve(f.status >= 200 && f.status <= 399);
+});
+
+/**
+ * Checks the Juxt (Miiverse) service availability.
+ * 
+ * @returns {boolean} Whether the Juxt service is available.
+ */
+const checkJuxt = new Promise(async resolve => {
+    const f = await fetch("http://api.olv.pretendo.cc/v1/status").catch(() => resolve(false));
+    resolve(f.status >= 200 && f.status <= 399);
+});
