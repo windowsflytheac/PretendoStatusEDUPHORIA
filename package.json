@@ -1,0 +1,29 @@
+{
+  "name": "pretendostatus",
+  "version": "0.1.0",
+  "description": "Pretendo Network servers status",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "jest",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Milk-Cool/PretendoStatus.git"
+  },
+  "keywords": [
+    "pretendo",
+    "status",
+    "page"
+  ],
+  "author": "Milk_Cool",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Milk-Cool/PretendoStatus/issues"
+  },
+  "homepage": "https://github.com/Milk-Cool/PretendoStatus#readme",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
