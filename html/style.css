@@ -1,0 +1,33 @@
+* {
+    color: white;
+}
+
+body {
+    background: #1B1F3B;
+    text-align: center;
+    padding-top: 10em;
+}
+
+.card {
+    background: #2a2f50;
+    padding: 1em;
+    border-radius: 1em;
+    width: 15em;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 2em;
+}
+
+iframe {
+    width: fit-content;
+    height: fit-content;
+}
+
+.good::before {
+    content: "Working";
+    color: lime;
+}
+.bad::before {
+    content: "Not working";
+    color: red;
+}
