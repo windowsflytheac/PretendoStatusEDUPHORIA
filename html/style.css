@@ -32,3 +32,10 @@ iframe {
     content: "Not working";
     color: red;
 }
+
+.warn {
+    background: gold;
+}
+.warn, .warn * {
+    color: #880;
+}
