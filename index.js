@@ -1,17 +1,17 @@
 /**
  * Checks the website availability.
  * 
- * @returns {boolean} Whether the website is available.
+ * @returns {Promise<boolean>} Whether the website is available.
  */
 const checkWebsite = () => new Promise(async resolve => {
-    const f = await fetch("https://pretendo.network/").catch(() => resolve(false));
-    resolve(f.status >= 200 && f.status <= 399);
+    await fetch("https://pretendo.network/").catch(() => resolve(false));
+    resolve(true); // Protected with Cloudflare so just getting a response is sufficient
 });
 
 /**
  * Checks the account service availability.
  * 
- * @returns {boolean} Whether the account service is available.
+ * @returns {Promise<boolean>} Whether the account service is available.
  */
 const checkAccounts = () => new Promise(async resolve => {
     // Checking the PN_Jemma's Mii
@@ -27,7 +27,7 @@ const checkAccounts = () => new Promise(async resolve => {
 /**
  * Checks the connection test service availability.
  * 
- * @returns {boolean} Whether the account service is available.
+ * @returns {Promise<boolean>} Whether the account service is available.
  */
 const checkConntest = () => new Promise(async resolve => {
     const f = await fetch("http://conntest.pretendo.cc").catch(() => resolve(false));
@@ -37,17 +37,17 @@ const checkConntest = () => new Promise(async resolve => {
 /**
  * Checks the Juxt website availability.
  * 
- * @returns {boolean} Whether the Juxt website is available.
+ * @returns {Promise<boolean>} Whether the Juxt website is available.
  */
 const checkJuxtWeb = () => new Promise(async resolve => {
-    const f = await fetch("https://juxt.pretendo.network/").catch(() => resolve(false));
-    resolve(f.status >= 200 && f.status <= 399);
+    await fetch("https://juxt.pretendo.network/").catch(() => resolve(false));
+    resolve(true); // Protected with Cloudflare so just getting a response is sufficient
 });
 
 /**
  * Checks the Juxt (Miiverse) service availability.
  * 
- * @returns {boolean} Whether the Juxt service is available.
+ * @returns {Promise<boolean>} Whether the Juxt service is available.
  */
 const checkJuxt = () => new Promise(async resolve => {
     const f = await fetch("http://api.olv.pretendo.cc/v1/status").catch(() => resolve(false));

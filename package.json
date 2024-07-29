@@ -1,6 +1,6 @@
 {
   "name": "pretendostatus",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Pretendo Network servers status",
   "main": "index.js",
   "type": "module",
@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/Milk-Cool/PretendoStatus#readme",
   "dependencies": {
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "node-calls-python": "^1.10.0"
   }
 }
