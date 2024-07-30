@@ -46,6 +46,7 @@ const status = {
 };
 
 const checkAll = async () => {
+    if(process.env.DISABLE_CHECKING) return;
     status.website = await checkers.checkWebsite();
     status.accounts = await checkers.checkAccounts();
     status.conntest = await checkers.checkConntest();
