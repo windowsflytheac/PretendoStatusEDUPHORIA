@@ -9,14 +9,25 @@ body {
     padding-top: 10em;
 }
 
+.cards {
+    flex-direction: column;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 50%;
+}
+
 .card {
+    display: inline-block;
     background: #2a2f50;
     padding: 1em;
     border-radius: 1em;
     width: 15em;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 2em;
+    margin: 1em;
+}
+@media only screen and (max-width: 768px) {
+    .cards {
+        max-width: 90%;
+    }
 }
 
 iframe {
