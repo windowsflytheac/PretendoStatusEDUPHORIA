@@ -40,6 +40,7 @@ const status = {
     "conntest": false,
     "juxtweb": false,
     "juxt": false,
+    "friends": false,
     "splatoon": false,
     "mk8": false
 };
@@ -51,6 +52,7 @@ const checkAll = async () => {
     status.juxtweb = await checkers.checkJuxtWeb();
     status.juxt = await checkers.checkJuxt();
 
+    status.friends = await py.call(pymodule, "friends", ...args);
     status.splatoon = await py.call(pymodule, "splatoon", ...args);
     status.mk8 = await py.call(pymodule, "mk8", ...args);
 };
