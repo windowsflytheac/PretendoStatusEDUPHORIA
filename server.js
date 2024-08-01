@@ -42,7 +42,8 @@ const status = {
     "juxt": false,
     "friends": false,
     "splatoon": false,
-    "mk8": false
+    "mk8": false,
+    "smm": false,
 };
 
 const checkAll = async () => {
@@ -56,6 +57,7 @@ const checkAll = async () => {
     status.friends = await py.call(pymodule, "friends", ...args);
     status.splatoon = await py.call(pymodule, "splatoon", ...args);
     status.mk8 = await py.call(pymodule, "mk8", ...args);
+    status.smm = await py.call(pymodule, "smm", ...args);
 };
 
 checkAll();
