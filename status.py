@@ -60,6 +60,19 @@ def mk8(
                  64, 0x1010EB00, "25dbf96a",
                  30504)
 
+def smm(
+    DEVICE_ID, SERIAL_NUMBER, SYSTEM_VERSION,
+    REGION_ID, COUNTRY_ID, REGION_NAME,
+    COUNTRY_NAME, LANGUAGE, USERNAME,
+    PASSWORD, CERT
+):
+    return check(DEVICE_ID, SERIAL_NUMBER, SYSTEM_VERSION,
+                 REGION_ID, COUNTRY_ID, REGION_NAME,
+                 COUNTRY_NAME, LANGUAGE, USERNAME,
+                 PASSWORD, CERT, 0x000500001018DB00,
+                 64, 0x1018DB00, "9f2b4678",
+                 30803)
+
 def friends(
     DEVICE_ID, SERIAL_NUMBER, SYSTEM_VERSION,
     REGION_ID, COUNTRY_ID, REGION_NAME,
