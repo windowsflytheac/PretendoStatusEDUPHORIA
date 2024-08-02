@@ -4,7 +4,7 @@
  * @returns {Promise<boolean>} Whether the website is available.
  */
 const checkWebsite = () => new Promise(async resolve => {
-    await fetch("https://pretendo.network/").catch(() => resolve(false));
+    const f = await fetch("https://pretendo.network/").catch(() => resolve(false));
     resolve((f.status >= 200 && f.status <= 399) || f.status == 403); // Protected with Cloudflare so just getting a response is sufficient
 });
 
@@ -40,7 +40,7 @@ const checkConntest = () => new Promise(async resolve => {
  * @returns {Promise<boolean>} Whether the Juxt website is available.
  */
 const checkJuxtWeb = () => new Promise(async resolve => {
-    await fetch("https://juxt.pretendo.network/").catch(() => resolve(false));
+    const f = await fetch("https://juxt.pretendo.network/").catch(() => resolve(false));
     resolve((f.status >= 200 && f.status <= 399) || f.status == 403); // Protected with Cloudflare so just getting a response is sufficient
 });
 
