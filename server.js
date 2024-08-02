@@ -61,7 +61,7 @@ const checkAll = async () => {
 };
 
 checkAll();
-setTimeout(checkAll, min * 60 * 1000);
+setInterval(checkAll, min * 60 * 1000);
 
 const getStatusText = status => status
     ? "good"
