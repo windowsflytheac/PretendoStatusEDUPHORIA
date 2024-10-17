@@ -5,7 +5,7 @@
  */
 const checkWebsite = () => new Promise(async resolve => {
     const f = await fetch("https://pretendo.network/").catch(() => resolve(false));
-    resolve((f.status >= 200 && f.status <= 399) || f.status == 403); // Protected with Cloudflare so just getting a response is sufficient
+    resolve(f && ((f.status >= 200 && f.status <= 399) || f.status == 403)); // Protected with Cloudflare so just getting a response is sufficient
 });
 
 /**
@@ -21,7 +21,7 @@ const checkAccounts = () => new Promise(async resolve => {
             "X-Nintendo-Client-Secret": "c91cdb5658bd4954ade78533a339cf9a"
         }
     }).catch(() => resolve(false));
-    resolve(f.status >= 200 && f.status <= 399);
+    resolve(f && f.status >= 200 && f.status <= 399);
 });
 
 /**
@@ -31,7 +31,7 @@ const checkAccounts = () => new Promise(async resolve => {
  */
 const checkConntest = () => new Promise(async resolve => {
     const f = await fetch("http://conntest.pretendo.cc").catch(() => resolve(false));
-    resolve(f.status >= 200 && f.status <= 399);
+    resolve(f && f.status >= 200 && f.status <= 399);
 });
 
 /**
@@ -41,7 +41,7 @@ const checkConntest = () => new Promise(async resolve => {
  */
 const checkJuxtWeb = () => new Promise(async resolve => {
     const f = await fetch("https://juxt.pretendo.network/").catch(() => resolve(false));
-    resolve((f.status >= 200 && f.status <= 399) || f.status == 403); // Protected with Cloudflare so just getting a response is sufficient
+    resolve(f && ((f.status >= 200 && f.status <= 399) || f.status == 403)); // Protected with Cloudflare so just getting a response is sufficient
 });
 
 /**
@@ -51,7 +51,7 @@ const checkJuxtWeb = () => new Promise(async resolve => {
  */
 const checkJuxt = () => new Promise(async resolve => {
     const f = await fetch("http://api.olv.pretendo.cc/v1/status").catch(() => resolve(false));
-    resolve(f.status >= 200 && f.status <= 399);
+    resolve(f && f.status >= 200 && f.status <= 399);
 });
 
 export default {
