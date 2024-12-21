@@ -35,12 +35,16 @@ iframe {
     height: fit-content;
 }
 
+.ggod, .bad {
+    white-space: pre;
+    text-wrap: wrap;
+}
 .good::before {
-    content: "Working";
+    content: "Working\A";
     color: lime;
 }
 .bad::before {
-    content: "Not working";
+    content: "Not working\A";
     color: red;
 }
 

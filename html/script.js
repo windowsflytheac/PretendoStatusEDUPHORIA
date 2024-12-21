@@ -8,5 +8,6 @@ for(const checkEl of document.querySelectorAll(".check")) {
             checkEl.classList.add("good");
         else if(status == "bad")
             checkEl.classList.add("bad");
+        checkEl.innerText = last;
     })();
 }

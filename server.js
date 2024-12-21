@@ -46,6 +46,18 @@ const status = {
     "mk8": false,
     "smm": false,
 };
+// a bit of a crutch but whatever
+const checked = {
+    "website": false,
+    "accounts": false,
+    "conntest": false,
+    "juxtweb": false,
+    "juxt": false,
+    "friends": false,
+    "splatoon": false,
+    "mk8": false,
+    "smm": false,
+}
 if(!fs.existsSync("recent.json"))
     fs.writeFileSync("recent.json", JSON.stringify({
         "website": [new Date(0), new Date(0)],
@@ -59,15 +71,21 @@ if(!fs.existsSync("recent.json"))
         "smm": [new Date(0), new Date(0)],
     }));
 /** @type {Record<string, [Date, Date]>} */
-const last = JSON.parse(fs.readFileSync("recent.json", "utf-8"));
+let last = JSON.parse(fs.readFileSync("recent.json", "utf-8"));
+for(const key of Object.keys(last)) {
+    last[key][0] = new Date(last[key][0]);
+    last[key][1] = new Date(last[key][1]);
+}
+console.log(last);
 
 const checkOne = async (name, res) => {
-    if(!status[name]) {
+    if(!res && (status[name] || !checked[name])) {
         last[name] = [new Date(), new Date(0)];
-    } else if(Number(last[name][1]) == 0) {
+    } else if(res && Number(last[name][1]) == 0) {
         last[name][1] = new Date();
     }
     status[name] = res;
+    checked[name] = true;
 };
 
 const checkAll = async () => {
@@ -93,7 +111,7 @@ const getStatusText = status => status
     ? "good"
     : "bad";
 const getDateText = last => Number(last[0]) == 0
-    ? "unknown"
+    ? ""
     : Number(last[1]) == 0
     ? `since ${last[0].toUTCString()}`
     : `last down ${last[0].toUTCString()} through ${last[1].toUTCString()}`
@@ -101,8 +119,9 @@ const getDateText = last => Number(last[0]) == 0
 app.get("/api/check/:service", (req, res) => {
     const { service } = req.params;
     if(!(service in status)) return res.status(404).end("not found");
+    console.log(last);
     res.status(200)
-        .end(getStatusText(status[service]));
+        .end(getStatusText(status[service]) + "\n" + getDateText(last[service]));
 });
 
 app.use(express.static("html/"));
