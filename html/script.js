@@ -3,9 +3,10 @@ for(const checkEl of document.querySelectorAll(".check")) {
         const { service } = checkEl.dataset;
         const f = await fetch(`/api/check/${service}`);
         const t = await f.text();
-        if(t == "good")
+        const [status, last] = t.split("\n");
+        if(status == "good")
             checkEl.classList.add("good");
-        else if(t == "bad")
+        else if(status == "bad")
             checkEl.classList.add("bad");
     })();
 }
