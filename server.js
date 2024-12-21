@@ -61,8 +61,7 @@ if(!fs.existsSync("recent.json"))
 /** @type {Record<string, [Date, Date]>} */
 const last = JSON.parse(fs.readFileSync("recent.json", "utf-8"));
 
-const checkOne = async (name, func, ...args) => {
-    const res = await func(...args);
+const checkOne = async (name, res) => {
     if(!status[name]) {
         last[name] = [new Date(), new Date(0)];
     } else if(Number(last[name][1]) == 0) {
@@ -73,16 +72,16 @@ const checkOne = async (name, func, ...args) => {
 
 const checkAll = async () => {
     if(process.env.DISABLE_CHECKING) return;
-    await checkOne("website", checkers.checkWebsite);
-    await checkOne("accounts", checkers.checkAccounts);
-    await checkOne("conntest", checkers.checkConntest);
-    await checkOne("juxtweb", checkers.checkJuxtWeb);
-    await checkOne("juxt", checkers.checkJuxt);
+    await checkOne("website", await checkers.checkWebsite());
+    await checkOne("accounts", await checkers.checkAccounts());
+    await checkOne("conntest", await checkers.checkConntest());
+    await checkOne("juxtweb", await checkers.checkJuxtWeb());
+    await checkOne("juxt", await checkers.checkJuxt());
 
-    await checkOne("friends", py.call, pymodule, "friends", ...args);
-    await checkOne("splatoon", py.call, pymodule, "splatoon", ...args);
-    await checkOne("mk8", py.call, pymodule, "mk8", ...args);
-    await checkOne("smm", py.call, pymodule, "smm", ...args);
+    await checkOne("friends", await py.call(pymodule, "friends", ...args));
+    await checkOne("splatoon", await py.call(pymodule, "splatoon", ...args));
+    await checkOne("mk8", await py.call(pymodule, "mk8", ...args));
+    await checkOne("smm", await py.call(pymodule, "smm", ...args));
     
     fs.writeFileSync("recent.json", JSON.stringify(last));
 };
