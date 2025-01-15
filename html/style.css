@@ -42,10 +42,12 @@ iframe {
 .good::before {
     content: "Working\A";
     color: lime;
+    white-space: pre;
 }
 .bad::before {
     content: "Not working\A";
     color: red;
+    white-space: pre;
 }
 
 .warn {
