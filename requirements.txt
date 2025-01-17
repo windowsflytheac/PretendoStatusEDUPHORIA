@@ -1,2 +1,2 @@
 asgiref
-pycryotodome
+pycrpyotodome

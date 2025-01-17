@@ -110,12 +110,24 @@ setInterval(checkAll, min * 60 * 1000);
 const getStatusText = status => status
     ? "good"
     : "bad";
-const getDateText = last => Number(last[0]) == 0
+const getDateText = last => {
+    const startTimestamp = new Date(last[0]);  // Convert the first timestamp to Date
+    const endTimestamp = new Date(last[1]);    // Convert the second timestamp to Date
+
+    const timeDiff = endTimestamp - startTimestamp; // Difference in milliseconds
+    const totalMinutes = Math.round(timeDiff / 60000); // Convert milliseconds to minutes
+
+    const hours = Math.floor(totalMinutes / 60);  // Full hours
+    const minutes = totalMinutes % 60;  // Remaining minutes after full hours
+
+    return Number(last[0]) == 0
     ? ""
     : Number(last[1]) == 0
-    ? `since ${last[0].toUTCString()}`
-    : `last down ${last[0].toUTCString()} through ${last[1].toUTCString()}`
-
+    ? `Since ${startTimestamp.toUTCString()}`
+    : hours > 0
+    ? `Last down ${endTimestamp.toUTCString()} (${hours} hours ${minutes} minutes)`
+    : `Last down ${endTimestamp.toUTCString()} (${minutes} minutes)`;
+}
 app.get("/api/check/:service", (req, res) => {
     const { service } = req.params;
     if(!(service in status)) return res.status(404).end("not found");
