@@ -299,3 +299,14 @@ def ykwblasters(
                     LANGUAGE, DEVICE_CERT, DEVICE_NAME, PID, PID_HMAC, NEX_PASSWORD, 0x00040000001CEF00,
                     0, "49744f0b",
                     30901, 0x0016C600)
+
+def miraclecure(
+        MAC_ADDRESS, SERIAL_NUMBER,
+        REGION_ID,
+        LANGUAGE, DEVICE_CERT, DEVICE_NAME, PID, PID_HMAC, NEX_PASSWORD
+):
+    return check3DS(MAC_ADDRESS, SERIAL_NUMBER,
+                    REGION_ID,
+                    LANGUAGE, DEVICE_CERT, DEVICE_NAME, PID, PID_HMAC, NEX_PASSWORD, 0x000400000013BB00,
+                    0, "07f4860a",
+                    30701)

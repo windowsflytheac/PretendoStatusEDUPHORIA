@@ -78,6 +78,7 @@ const status = {
     "kirbyclash": false,
     "pokexy": false,
     "ykwblasters": false,
+    "miraclecure": false,
 };
 // a bit of a crutch but whatever
 const checked = {
@@ -111,6 +112,7 @@ const checked = {
     "kirbyclash": false,
     "pokexy": false,
     "ykwblasters": false,
+    "miraclecure": false,
 }
 if(!fs.existsSync("recent.json"))
     fs.writeFileSync("recent.json", JSON.stringify({
@@ -141,6 +143,7 @@ if(!fs.existsSync("recent.json"))
         "kirbyclash": [new Date(0), new Date(0)],
         "pokexy": [new Date(0), new Date(0)],
         "ykwblasters": [new Date(0), new Date(0)],
+        "miraclecure": [new Date(0), new Date(0)],
     }));
 /** @type {Record<string, [Date, Date]>} */
 let last = JSON.parse(fs.readFileSync("recent.json", "utf-8"));
@@ -192,6 +195,7 @@ const checkAll = async () => {
     await checkOne("pokexy", await py.call(pymodule, "pokexy", ...args3DS));
     await checkOne("tippingstars", await py.call(pymodule, "tippingstars", ...args3DS));
     await checkOne("ykwblasters", await py.call(pymodule, "ykwblasters", ...args3DS));
+    await checkOne("miraclecure", await py.call(pymodule, "miraclecure", ...args3DS));
 
     fs.writeFileSync("recent.json", JSON.stringify(last));
 };
