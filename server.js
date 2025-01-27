@@ -21,17 +21,29 @@ let {
     LANGUAGE,
     USERNAME,
     PASSWORD,
-    CERT
+    CERT,
+    DS_MAC_ADDRESS, DS_SERIAL_NUMBER,
+    DS_REGION_ID, DS_COUNTRY_ID, DS_REGION_NAME,
+    DS_LANGUAGE_ID, DS_DEVICE_CERT,DS_DEVICE_NAME, DS_PID, DS_PID_HMAC, DS_USERNAME, DS_NEX_PASSWORD
 } = process.env;
+
 DEVICE_ID = parseInt(DEVICE_ID);
 SYSTEM_VERSION = parseInt(SYSTEM_VERSION, 16);
 REGION_ID = parseInt(REGION_ID);
 
-const args = [
+DS_REGION_ID = parseInt(DS_REGION_ID);
+DS_LANGUAGE_ID = parseInt(DS_LANGUAGE_ID);
+
+const argsWiiU = [
     DEVICE_ID, SERIAL_NUMBER, SYSTEM_VERSION,
     REGION_ID, COUNTRY_ID, REGION_NAME,
     COUNTRY_NAME, LANGUAGE, USERNAME,
     PASSWORD, CERT
+];
+const args3DS = [
+    DS_MAC_ADDRESS, DS_SERIAL_NUMBER,
+    DS_REGION_ID,
+    DS_LANGUAGE_ID, DS_DEVICE_CERT,DS_DEVICE_NAME, DS_PID, DS_PID_HMAC, DS_NEX_PASSWORD
 ];
 
 /** @type {Record<string, boolean>} */
@@ -40,11 +52,32 @@ const status = {
     "accounts": false,
     "conntest": false,
     "juxtweb": false,
+    "juxtwebbeta": false,
     "juxt": false,
     "friends": false,
+
     "splatoon": false,
     "mk8": false,
     "smm": false,
+    "minecraft": false,
+    "pikmin3": false,
+    "wiiuchat": false,
+    "drluigi": false,
+    "smashu": false,
+    "tippingstars": false,
+    "pokken": false,
+
+    "mk7": false,
+    "steeldiver": false,
+    "smash3d": false,
+    "luigi": false,
+    "mh4u": false,
+    "triforce": false,
+    "icarus": false,
+    "ironfall": false,
+    "kirbyclash": false,
+    "pokexy": false,
+    "ykwblasters": false,
 };
 // a bit of a crutch but whatever
 const checked = {
@@ -52,11 +85,32 @@ const checked = {
     "accounts": false,
     "conntest": false,
     "juxtweb": false,
+    "juxtwebbeta": false,
     "juxt": false,
     "friends": false,
+
     "splatoon": false,
     "mk8": false,
     "smm": false,
+    "minecraft": false,
+    "pikmin3": false,
+    "wiiuchat": false,
+    "drluigi": false,
+    "smashu": false,
+    "tippingstars": false,
+    "pokken": false,
+
+    "mk7": false,
+    "steeldiver": false,
+    "smash3d": false,
+    "luigi": false,
+    "mh4u": false,
+    "triforce": false,
+    "icarus": false,
+    "ironfall": false,
+    "kirbyclash": false,
+    "pokexy": false,
+    "ykwblasters": false,
 }
 if(!fs.existsSync("recent.json"))
     fs.writeFileSync("recent.json", JSON.stringify({
@@ -64,11 +118,29 @@ if(!fs.existsSync("recent.json"))
         "accounts": [new Date(0), new Date(0)],
         "conntest": [new Date(0), new Date(0)],
         "juxtweb": [new Date(0), new Date(0)],
+        "juxtwebbeta": [new Date(0), new Date(0)],
         "juxt": [new Date(0), new Date(0)],
         "friends": [new Date(0), new Date(0)],
         "splatoon": [new Date(0), new Date(0)],
         "mk8": [new Date(0), new Date(0)],
-        "smm": [new Date(0), new Date(0)],
+        "minecraft": [new Date(0), new Date(0)],
+        "pikmin3": [new Date(0), new Date(0)],
+        "wiiuchat": [new Date(0), new Date(0)],
+        "drluigi": [new Date(0), new Date(0)],
+        "smashu": [new Date(0), new Date(0)],
+        "tippingstars": [new Date(0), new Date(0)],
+        "pokken": [new Date(0), new Date(0)],
+        "mk7": [new Date(0), new Date(0)],
+        "steeldiver": [new Date(0), new Date(0)],
+        "smash3d": [new Date(0), new Date(0)],
+        "luigi": [new Date(0), new Date(0)],
+        "mh4u": [new Date(0), new Date(0)],
+        "triforce": [new Date(0), new Date(0)],
+        "icarus": [new Date(0), new Date(0)],
+        "ironfall": [new Date(0), new Date(0)],
+        "kirbyclash": [new Date(0), new Date(0)],
+        "pokexy": [new Date(0), new Date(0)],
+        "ykwblasters": [new Date(0), new Date(0)],
     }));
 /** @type {Record<string, [Date, Date]>} */
 let last = JSON.parse(fs.readFileSync("recent.json", "utf-8"));
@@ -81,7 +153,7 @@ console.log(last);
 const checkOne = async (name, res) => {
     if(!res && (status[name] || !checked[name])) {
         last[name] = [new Date(), new Date(0)];
-    } else if(res && Number(last[name][1]) == 0) {
+    } else if(res && last[name] != null && Number(last[name][1]) == 0) {
         last[name][1] = new Date();
     }
     status[name] = res;
@@ -94,13 +166,33 @@ const checkAll = async () => {
     await checkOne("accounts", await checkers.checkAccounts());
     await checkOne("conntest", await checkers.checkConntest());
     await checkOne("juxtweb", await checkers.checkJuxtWeb());
+    await checkOne("juxtwebbeta", await checkers.checkJuxtWeb());
     await checkOne("juxt", await checkers.checkJuxt());
 
-    await checkOne("friends", await py.call(pymodule, "friends", ...args));
-    await checkOne("splatoon", await py.call(pymodule, "splatoon", ...args));
-    await checkOne("mk8", await py.call(pymodule, "mk8", ...args));
-    await checkOne("smm", await py.call(pymodule, "smm", ...args));
-    
+    await checkOne("friends", await py.call(pymodule, "friends", ...argsWiiU));
+    await checkOne("splatoon", await py.call(pymodule, "splatoon", ...argsWiiU));
+    await checkOne("mk8", await py.call(pymodule, "mk8", ...argsWiiU));
+    await checkOne("smm", await py.call(pymodule, "smm", ...argsWiiU));
+    await checkOne("minecraft", await py.call(pymodule, "minecraft", ...argsWiiU));
+    await checkOne("pikmin3", await py.call(pymodule, "pikmin3", ...argsWiiU));
+    await checkOne("wiiuchat", await py.call(pymodule, "wiiuchat", ...argsWiiU));
+    await checkOne("drluigi", await py.call(pymodule, "drluigi", ...argsWiiU));
+    await checkOne("smashu", await py.call(pymodule, "smashu", ...argsWiiU));
+    await checkOne("pokken", await py.call(pymodule, "pokken", ...argsWiiU));
+
+    await checkOne("mk7", await py.call(pymodule, "mk7", ...args3DS));
+    await checkOne("smash3d", await py.call(pymodule, "smash3d", ...args3DS));
+    await checkOne("steeldiver", await py.call(pymodule, "steeldiver", ...args3DS));
+    await checkOne("luigi", await py.call(pymodule, "luigi", ...args3DS));
+    await checkOne("mh4u", await py.call(pymodule, "mh4u", ...args3DS));
+    await checkOne("triforce", await py.call(pymodule, "triforce", ...args3DS));
+    await checkOne("icarus", await py.call(pymodule, "icarus", ...args3DS));
+    await checkOne("ironfall", await py.call(pymodule, "ironfall", ...args3DS));
+    await checkOne("kirbyclash", await py.call(pymodule, "kirbyclash", ...args3DS));
+    await checkOne("pokexy", await py.call(pymodule, "pokexy", ...args3DS));
+    await checkOne("tippingstars", await py.call(pymodule, "tippingstars", ...args3DS));
+    await checkOne("ykwblasters", await py.call(pymodule, "ykwblasters", ...args3DS));
+
     fs.writeFileSync("recent.json", JSON.stringify(last));
 };
 
@@ -111,6 +203,7 @@ const getStatusText = status => status
     ? "good"
     : "bad";
 const getDateText = last => {
+    if(last == null) return `No downtime recorded`
     const startTimestamp = new Date(last[0]);  // Convert the first timestamp to Date
     const endTimestamp = new Date(last[1]);    // Convert the second timestamp to Date
 
@@ -121,7 +214,7 @@ const getDateText = last => {
     const minutes = totalMinutes % 60;  // Remaining minutes after full hours
 
     return Number(last[0]) == 0
-    ? ""
+    ? "No downtime recorded"
     : Number(last[1]) == 0
     ? `Since ${startTimestamp.toUTCString()}`
     : hours > 0
