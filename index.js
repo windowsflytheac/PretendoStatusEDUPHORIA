@@ -23,6 +23,21 @@ const checkAccounts = () => new Promise(async resolve => {
     }).catch(() => resolve(false));
     resolve(f && f.status >= 200 && f.status <= 399);
 });
+/**
+ * Checks the account service availability.
+ *
+ * @returns {Promise<boolean>} Whether the account service is available.
+ */
+const checkSpr = () => new Promise(async resolve => {
+    // Checking the PN_Jemma's Mii
+    const f = await fetch("https://service.spr.app.pretendo.cc/relay/0", {
+        "headers": {
+            "X-Nintendo-Client-ID": "a2efa818a34fa16b8afbc8a74eba3eda",
+            "X-Nintendo-Client-Secret": "c91cdb5658bd4954ade78533a339cf9a"
+        }
+    }).catch(() => resolve(false));
+    resolve(f && f.status >= 200 && f.status <= 399);
+});
 
 /**
  * Checks the connection test service availability.
@@ -43,6 +58,15 @@ const checkJuxtWeb = () => new Promise(async resolve => {
     const f = await fetch("https://juxt.pretendo.network/").catch(() => resolve(false));
     resolve(f && ((f.status >= 200 && f.status <= 399) || f.status == 403)); // Protected with Cloudflare so just getting a response is sufficient
 });
+/**
+ * Checks the Juxt-Beta website availability.
+ *
+ * @returns {Promise<boolean>} Whether the Juxt website is available.
+ */
+const checkJuxtWebBeta = () => new Promise(async resolve => {
+    const f = await fetch("https://juxt-beta.pretendo.network/").catch(() => resolve(false));
+    resolve(f && ((f.status >= 200 && f.status <= 399) || f.status == 403)); // Protected with Cloudflare so just getting a response is sufficient
+});
 
 /**
  * Checks the Juxt (Miiverse) service availability.
@@ -59,5 +83,6 @@ export default {
     checkAccounts,
     checkConntest,
     checkJuxtWeb,
+    checkJuxtWebBeta,
     checkJuxt
 };

@@ -1,20 +1,20 @@
-from nintendo.nex import backend, settings
-from nintendo import nnas
-import anyio
+import base64
+import logging
+
 from asgiref.sync import async_to_sync
 
-import logging
+from nintendo import nnas, nasc
+from nintendo.nex import backend, settings
+
 logging.basicConfig(level=logging.INFO)
 
+
 @async_to_sync
-async def check(
-    DEVICE_ID, SERIAL_NUMBER, SYSTEM_VERSION,
-    REGION_ID, _COUNTRY_ID, _REGION_NAME,
-    COUNTRY_NAME, LANGUAGE, USERNAME,
-    PASSWORD, CERT, TITLE_ID,
-    TITLE_VERSION, GAME_SERVER_ID, ACCESS_KEY,
-    NEX_VERSION
-):
+async def checkWiiU(DEVICE_ID, SERIAL_NUMBER, SYSTEM_VERSION, REGION_ID, _COUNTRY_ID, _REGION_NAME, COUNTRY_NAME,
+                    LANGUAGE, USERNAME, PASSWORD, CERT, TITLE_ID, TITLE_VERSION, ACCESS_KEY, NEX_VERSION,
+                    GAME_SERVER_ID: int = None):
+    if GAME_SERVER_ID is None:
+        GAME_SERVER_ID = TITLE_ID & 0xFFFFFFFF
     try:
         nas = nnas.NNASClient()
         nas.set_device(DEVICE_ID, SERIAL_NUMBER, SYSTEM_VERSION, CERT)
@@ -34,54 +34,268 @@ async def check(
         logging.exception(e)
         return False
 
+
 def splatoon(
-    DEVICE_ID, SERIAL_NUMBER, SYSTEM_VERSION,
-    REGION_ID, COUNTRY_ID, REGION_NAME,
-    COUNTRY_NAME, LANGUAGE, USERNAME,
-    PASSWORD, CERT
+        DEVICE_ID, SERIAL_NUMBER, SYSTEM_VERSION,
+        REGION_ID, COUNTRY_ID, REGION_NAME,
+        COUNTRY_NAME, LANGUAGE, USERNAME,
+        PASSWORD, CERT
 ):
-    return check(DEVICE_ID, SERIAL_NUMBER, SYSTEM_VERSION,
-                 REGION_ID, COUNTRY_ID, REGION_NAME,
-                 COUNTRY_NAME, LANGUAGE, USERNAME,
-                 PASSWORD, CERT, 0x0005000010162B00,
-                 272, 0x10162B00, "6f599f81",
-                 30500)
+    return checkWiiU(DEVICE_ID, SERIAL_NUMBER, SYSTEM_VERSION, REGION_ID, COUNTRY_ID, REGION_NAME, COUNTRY_NAME,
+                     LANGUAGE, USERNAME, PASSWORD, CERT, 0x0005000010162B00, 272, "6f599f81", 30500)
+
 
 def mk8(
-    DEVICE_ID, SERIAL_NUMBER, SYSTEM_VERSION,
-    REGION_ID, COUNTRY_ID, REGION_NAME,
-    COUNTRY_NAME, LANGUAGE, USERNAME,
-    PASSWORD, CERT
+        DEVICE_ID, SERIAL_NUMBER, SYSTEM_VERSION,
+        REGION_ID, COUNTRY_ID, REGION_NAME,
+        COUNTRY_NAME, LANGUAGE, USERNAME,
+        PASSWORD, CERT
 ):
-    return check(DEVICE_ID, SERIAL_NUMBER, SYSTEM_VERSION,
-                 REGION_ID, COUNTRY_ID, REGION_NAME,
-                 COUNTRY_NAME, LANGUAGE, USERNAME,
-                 PASSWORD, CERT, 0x000500001010EB00,
-                 64, 0x1010EB00, "25dbf96a",
-                 30504)
+    return checkWiiU(DEVICE_ID, SERIAL_NUMBER, SYSTEM_VERSION, REGION_ID, COUNTRY_ID, REGION_NAME, COUNTRY_NAME,
+                     LANGUAGE, USERNAME, PASSWORD, CERT, 0x000500001010EB00, 64, "25dbf96a", 30504)
+
 
 def smm(
-    DEVICE_ID, SERIAL_NUMBER, SYSTEM_VERSION,
-    REGION_ID, COUNTRY_ID, REGION_NAME,
-    COUNTRY_NAME, LANGUAGE, USERNAME,
-    PASSWORD, CERT
+        DEVICE_ID, SERIAL_NUMBER, SYSTEM_VERSION,
+        REGION_ID, COUNTRY_ID, REGION_NAME,
+        COUNTRY_NAME, LANGUAGE, USERNAME,
+        PASSWORD, CERT
 ):
-    return check(DEVICE_ID, SERIAL_NUMBER, SYSTEM_VERSION,
-                 REGION_ID, COUNTRY_ID, REGION_NAME,
-                 COUNTRY_NAME, LANGUAGE, USERNAME,
-                 PASSWORD, CERT, 0x000500001018DB00,
-                 64, 0x1018DB00, "9f2b4678",
-                 30803)
+    return checkWiiU(DEVICE_ID, SERIAL_NUMBER, SYSTEM_VERSION, REGION_ID, COUNTRY_ID, REGION_NAME, COUNTRY_NAME,
+                     LANGUAGE, USERNAME, PASSWORD, CERT, 0x000500001018DB00, 64, "9f2b4678", 30803)
+
 
 def friends(
-    DEVICE_ID, SERIAL_NUMBER, SYSTEM_VERSION,
-    REGION_ID, COUNTRY_ID, REGION_NAME,
-    COUNTRY_NAME, LANGUAGE, USERNAME,
-    PASSWORD, CERT
+        DEVICE_ID, SERIAL_NUMBER, SYSTEM_VERSION,
+        REGION_ID, COUNTRY_ID, REGION_NAME,
+        COUNTRY_NAME, LANGUAGE, USERNAME,
+        PASSWORD, CERT
 ):
-    return check(DEVICE_ID, SERIAL_NUMBER, SYSTEM_VERSION,
-                 REGION_ID, COUNTRY_ID, REGION_NAME,
-                 COUNTRY_NAME, LANGUAGE, USERNAME,
-                 PASSWORD, CERT, 0x0005000010001C00,
-                 0, 0x3200, "ridfebb9",
-                 20000)
+    return checkWiiU(DEVICE_ID, SERIAL_NUMBER, SYSTEM_VERSION, REGION_ID, COUNTRY_ID, REGION_NAME, COUNTRY_NAME,
+                     LANGUAGE, USERNAME, PASSWORD, CERT, 0x0005000010001C00, 0, "ridfebb9", 20000, 0x3200)
+
+
+def minecraft(
+        DEVICE_ID, SERIAL_NUMBER, SYSTEM_VERSION,
+        REGION_ID, COUNTRY_ID, REGION_NAME,
+        COUNTRY_NAME, LANGUAGE, USERNAME,
+        PASSWORD, CERT
+):
+    return checkWiiU(DEVICE_ID, SERIAL_NUMBER, SYSTEM_VERSION, REGION_ID, COUNTRY_ID, REGION_NAME, COUNTRY_NAME,
+                     LANGUAGE, USERNAME, PASSWORD, CERT, 0x00050000101DBE00 , 0, "f1b61c8e", 31000)
+
+
+def pikmin3(
+        DEVICE_ID, SERIAL_NUMBER, SYSTEM_VERSION,
+        REGION_ID, COUNTRY_ID, REGION_NAME,
+        COUNTRY_NAME, LANGUAGE, USERNAME,
+        PASSWORD, CERT
+):
+    return checkWiiU(DEVICE_ID, SERIAL_NUMBER, SYSTEM_VERSION, REGION_ID, COUNTRY_ID, REGION_NAME, COUNTRY_NAME,
+                     LANGUAGE, USERNAME, PASSWORD, CERT, 0x0005000E1012BC00, 0, "f6accfc1", 30300)
+
+
+def wiiuchat(
+        DEVICE_ID, SERIAL_NUMBER, SYSTEM_VERSION,
+        REGION_ID, COUNTRY_ID, REGION_NAME,
+        COUNTRY_NAME, LANGUAGE, USERNAME,
+        PASSWORD, CERT
+):
+    return checkWiiU(DEVICE_ID, SERIAL_NUMBER, SYSTEM_VERSION, REGION_ID, COUNTRY_ID, REGION_NAME, COUNTRY_NAME,
+                     LANGUAGE, USERNAME, PASSWORD, CERT, 0x000500101005A000, 0, "e7a47214", 30402)
+
+
+def drluigi(
+        DEVICE_ID, SERIAL_NUMBER, SYSTEM_VERSION,
+        REGION_ID, COUNTRY_ID, REGION_NAME,
+        COUNTRY_NAME, LANGUAGE, USERNAME,
+        PASSWORD, CERT
+):
+    return checkWiiU(DEVICE_ID, SERIAL_NUMBER, SYSTEM_VERSION, REGION_ID, COUNTRY_ID, REGION_NAME, COUNTRY_NAME,
+                     LANGUAGE, USERNAME, PASSWORD, CERT, 0x0005000010150300, 0, "2a724fa4", 30502)
+
+
+def smashu(
+        DEVICE_ID, SERIAL_NUMBER, SYSTEM_VERSION,
+        REGION_ID, COUNTRY_ID, REGION_NAME,
+        COUNTRY_NAME, LANGUAGE, USERNAME,
+        PASSWORD, CERT
+):
+    return checkWiiU(DEVICE_ID, SERIAL_NUMBER, SYSTEM_VERSION, REGION_ID, COUNTRY_ID, REGION_NAME, COUNTRY_NAME,
+                     LANGUAGE, USERNAME, PASSWORD, CERT, 0x0005000C10110E00, 0, "2869ba38", 30600)
+
+
+
+
+
+def pokken(
+        DEVICE_ID, SERIAL_NUMBER, SYSTEM_VERSION,
+        REGION_ID, COUNTRY_ID, REGION_NAME,
+        COUNTRY_NAME, LANGUAGE, USERNAME,
+        PASSWORD, CERT
+):
+    return checkWiiU(DEVICE_ID, SERIAL_NUMBER, SYSTEM_VERSION, REGION_ID, COUNTRY_ID, REGION_NAME, COUNTRY_NAME,
+                     LANGUAGE, USERNAME, PASSWORD, CERT, 0x00050000101C5800, 0, "6ef3adf1", 31000)
+
+
+
+@async_to_sync
+async def check3DS(
+        MAC_ADDRESS, SERIAL_NUMBER,
+        REGION_ID,
+        LANGUAGE, DEVICE_CERT, DEVICE_NAME, PID, PID_HMAC, NEX_PASSWORD, TITLE_ID,
+        TITLE_VERSION, ACCESS_KEY, NEX_VERSION, GAME_SERVER_ID: int = None
+):
+    if GAME_SERVER_ID is None:
+        GAME_SERVER_ID = TITLE_ID & 0xFFFFFFFF
+    try:
+
+        nas = nasc.NASCClient()
+        nas.set_title(TITLE_ID, TITLE_VERSION)
+        nas.set_device(SERIAL_NUMBER, MAC_ADDRESS, bytes.fromhex(DEVICE_CERT), DEVICE_NAME)
+        nas.set_locale(REGION_ID, LANGUAGE)
+        nas.set_user(PID, PID_HMAC)
+
+        response = await nas.login(GAME_SERVER_ID, DEVICE_NAME)
+        s = settings.default()
+        s.configure(ACCESS_KEY, NEX_VERSION)
+        async with backend.connect(s, response.host, response.port) as be:
+            be.login(str(PID), base64.b64decode(NEX_PASSWORD).decode("utf-8"))
+            return True
+
+    except Exception as e:
+        print(f"Server {hex(TITLE_ID)} down!")
+        logging.exception(e)
+        return False
+
+def mk7(
+        MAC_ADDRESS, SERIAL_NUMBER,
+        REGION_ID,
+        LANGUAGE, DEVICE_CERT, DEVICE_NAME, PID, PID_HMAC, NEX_PASSWORD
+):
+    return check3DS(MAC_ADDRESS, SERIAL_NUMBER,
+                    REGION_ID,
+                    LANGUAGE, DEVICE_CERT, DEVICE_NAME, PID, PID_HMAC, NEX_PASSWORD, 0x0004000000030600,
+                    0, "6181dff1",
+                    20403)
+
+def steeldiver(
+        MAC_ADDRESS, SERIAL_NUMBER,
+        REGION_ID,
+        LANGUAGE, DEVICE_CERT, DEVICE_NAME, PID, PID_HMAC, NEX_PASSWORD
+):
+    return check3DS(MAC_ADDRESS, SERIAL_NUMBER,
+                    REGION_ID,
+                    LANGUAGE, DEVICE_CERT, DEVICE_NAME, PID, PID_HMAC, NEX_PASSWORD, 0x00040000000D7C00,
+                    0, "fb9537fe",
+                    30700)
+
+def smash3d(
+        MAC_ADDRESS, SERIAL_NUMBER,
+        REGION_ID,
+        LANGUAGE, DEVICE_CERT, DEVICE_NAME, PID, PID_HMAC, NEX_PASSWORD
+):
+    return check3DS(MAC_ADDRESS, SERIAL_NUMBER,
+                    REGION_ID,
+                    LANGUAGE, DEVICE_CERT, DEVICE_NAME, PID, PID_HMAC, NEX_PASSWORD, 0x00040000000B8B00,
+                    0, "9002f8c2",
+                    30700)
+
+def luigi(
+        MAC_ADDRESS, SERIAL_NUMBER,
+        REGION_ID,
+        LANGUAGE, DEVICE_CERT, DEVICE_NAME, PID, PID_HMAC, NEX_PASSWORD
+):
+    return check3DS(MAC_ADDRESS, SERIAL_NUMBER,
+                    REGION_ID,
+                    LANGUAGE, DEVICE_CERT, DEVICE_NAME, PID, PID_HMAC, NEX_PASSWORD, 0x0004000000076400,
+                    0, "3861a9f8",
+                    30100)
+
+def triforce(
+        MAC_ADDRESS, SERIAL_NUMBER,
+        REGION_ID,
+        LANGUAGE, DEVICE_CERT, DEVICE_NAME, PID, PID_HMAC, NEX_PASSWORD
+):
+    return check3DS(MAC_ADDRESS, SERIAL_NUMBER,
+                    REGION_ID,
+                    LANGUAGE, DEVICE_CERT, DEVICE_NAME, PID, PID_HMAC, NEX_PASSWORD, 0x0004000000176E00,
+                    0, "c1621b84",
+                    30900)
+
+def mh4u(
+        MAC_ADDRESS, SERIAL_NUMBER,
+        REGION_ID,
+        LANGUAGE, DEVICE_CERT, DEVICE_NAME, PID, PID_HMAC, NEX_PASSWORD
+):
+    return check3DS(MAC_ADDRESS, SERIAL_NUMBER,
+                    REGION_ID,
+                    LANGUAGE, DEVICE_CERT, DEVICE_NAME, PID, PID_HMAC, NEX_PASSWORD, 0x000400000011D700,
+                    0, "d44c6198",
+                    30601)
+
+def icarus(
+        MAC_ADDRESS, SERIAL_NUMBER,
+        REGION_ID,
+        LANGUAGE, DEVICE_CERT, DEVICE_NAME, PID, PID_HMAC, NEX_PASSWORD
+):
+    return check3DS(MAC_ADDRESS, SERIAL_NUMBER,
+                    REGION_ID,
+                    LANGUAGE, DEVICE_CERT, DEVICE_NAME, PID, PID_HMAC, NEX_PASSWORD, 0x0004000000030000,
+                    0, "58a7e494",
+                    20702)
+
+def ironfall(
+        MAC_ADDRESS, SERIAL_NUMBER,
+        REGION_ID,
+        LANGUAGE, DEVICE_CERT, DEVICE_NAME, PID, PID_HMAC, NEX_PASSWORD
+):
+    return check3DS(MAC_ADDRESS, SERIAL_NUMBER,
+                    REGION_ID,
+                    LANGUAGE, DEVICE_CERT, DEVICE_NAME, PID, PID_HMAC, NEX_PASSWORD, 0x000400000017D000,
+                    0, "feb81c7c",
+                    30701)
+
+def kirbyclash(
+        MAC_ADDRESS, SERIAL_NUMBER,
+        REGION_ID,
+        LANGUAGE, DEVICE_CERT, DEVICE_NAME, PID, PID_HMAC, NEX_PASSWORD
+):
+    return check3DS(MAC_ADDRESS, SERIAL_NUMBER,
+                    REGION_ID,
+                    LANGUAGE, DEVICE_CERT, DEVICE_NAME, PID, PID_HMAC, NEX_PASSWORD, 0x00040000001A0000,
+                    0, "e0c85605",
+                    31001)
+
+def pokexy(
+        MAC_ADDRESS, SERIAL_NUMBER,
+        REGION_ID,
+        LANGUAGE, DEVICE_CERT, DEVICE_NAME, PID, PID_HMAC, NEX_PASSWORD
+):
+    return check3DS(MAC_ADDRESS, SERIAL_NUMBER,
+                    REGION_ID,
+                    LANGUAGE, DEVICE_CERT, DEVICE_NAME, PID, PID_HMAC, NEX_PASSWORD, 0x0004000000055E00,
+                    0, "876138df",
+                    30300)
+
+def tippingstars(
+        MAC_ADDRESS, SERIAL_NUMBER,
+        REGION_ID,
+        LANGUAGE, DEVICE_CERT, DEVICE_NAME, PID, PID_HMAC, NEX_PASSWORD
+):
+    return check3DS(MAC_ADDRESS, SERIAL_NUMBER,
+                    REGION_ID,
+                    LANGUAGE, DEVICE_CERT, DEVICE_NAME, PID, PID_HMAC, NEX_PASSWORD, 0x000400000012C900,
+                    0, "d8927c3f",
+                    30701)
+
+def ykwblasters(
+        MAC_ADDRESS, SERIAL_NUMBER,
+        REGION_ID,
+        LANGUAGE, DEVICE_CERT, DEVICE_NAME, PID, PID_HMAC, NEX_PASSWORD
+):
+    return check3DS(MAC_ADDRESS, SERIAL_NUMBER,
+                    REGION_ID,
+                    LANGUAGE, DEVICE_CERT, DEVICE_NAME, PID, PID_HMAC, NEX_PASSWORD, 0x00040000001CEF00,
+                    0, "49744f0b",
+                    30901, 0x0016C600)
