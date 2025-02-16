@@ -5,7 +5,8 @@ from asgiref.sync import async_to_sync
 
 from nintendo import nnas, nasc
 from nintendo.nex import backend, settings
-
+from nintendo.nex.authentication import AuthenticationInfo
+from dns import resolver
 logging.basicConfig(level=logging.INFO)
 
 
@@ -82,7 +83,7 @@ def minecraft(
         PASSWORD, CERT
 ):
     return checkWiiU(DEVICE_ID, SERIAL_NUMBER, SYSTEM_VERSION, REGION_ID, COUNTRY_ID, REGION_NAME, COUNTRY_NAME,
-                     LANGUAGE, USERNAME, PASSWORD, CERT, 0x00050000101DBE00 , 0, "f1b61c8e", 31000)
+                     LANGUAGE, USERNAME, PASSWORD, CERT, 0x00050000101D9D00, 0, "f1b61c8e", 31000)
 
 
 def pikmin3(
@@ -310,3 +311,25 @@ def miraclecure(
                     LANGUAGE, DEVICE_CERT, DEVICE_NAME, PID, PID_HMAC, NEX_PASSWORD, 0x000400000013BB00,
                     0, "07f4860a",
                     30701)
+def rumbleworld(
+        MAC_ADDRESS, SERIAL_NUMBER,
+        REGION_ID,
+        LANGUAGE, DEVICE_CERT, DEVICE_NAME, PID, PID_HMAC, NEX_PASSWORD
+):
+    return check3DS(MAC_ADDRESS, SERIAL_NUMBER,
+                    REGION_ID,
+                    LANGUAGE, DEVICE_CERT, DEVICE_NAME, PID, PID_HMAC, NEX_PASSWORD, 0x0004000000185A00,
+                    0, "844f1d0c",
+                    30813)
+
+def sssl():
+    r = resolver.Resolver()
+    r.nameservers = ['88.198.140.154']
+    try:
+        answers = r.resolve("account.nintendo.net", "A")
+        for ip in answers:
+            if str(ip) == "88.198.140.154":
+                return True
+        return False
+    except dns.exception.DNSException:
+        return False

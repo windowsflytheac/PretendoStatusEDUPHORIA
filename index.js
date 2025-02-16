@@ -7,6 +7,15 @@ const checkWebsite = () => new Promise(async resolve => {
     const f = await fetch("https://pretendo.network/").catch(() => resolve(false));
     resolve(f && ((f.status >= 200 && f.status <= 399) || f.status == 403)); // Protected with Cloudflare so just getting a response is sufficient
 });
+/**
+ * Checks the forum availability.
+ *
+ * @returns {Promise<boolean>} Whether the forum is available.
+ */
+const checkForum = () => new Promise(async resolve => {
+    const f = await fetch("https://forum.pretendo.network/").catch(() => resolve(false));
+    resolve(f && ((f.status >= 200 && f.status <= 399) || f.status == 403)); // Protected with Cloudflare so just getting a response is sufficient
+});
 
 /**
  * Checks the account service availability.
@@ -80,6 +89,7 @@ const checkJuxt = () => new Promise(async resolve => {
 
 export default {
     checkWebsite,
+    checkForum,
     checkAccounts,
     checkConntest,
     checkJuxtWeb,
