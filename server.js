@@ -49,13 +49,15 @@ const args3DS = [
 /** @type {Record<string, boolean>} */
 const status = {
     "website": false,
+    "forum": false,
     "accounts": false,
     "conntest": false,
     "juxtweb": false,
     "juxtwebbeta": false,
     "juxt": false,
-    "friends": false,
+    "sssl": false,
 
+    "friends": false,
     "splatoon": false,
     "mk8": false,
     "smm": false,
@@ -78,17 +80,21 @@ const status = {
     "kirbyclash": false,
     "pokexy": false,
     "ykwblasters": false,
+    "miraclecure": false,
+    "rumbleworld": false,
 };
 // a bit of a crutch but whatever
 const checked = {
     "website": false,
+    "forum": false,
     "accounts": false,
     "conntest": false,
     "juxtweb": false,
     "juxtwebbeta": false,
     "juxt": false,
-    "friends": false,
+    "sssl": false,
 
+    "friends": false,
     "splatoon": false,
     "mk8": false,
     "smm": false,
@@ -111,15 +117,19 @@ const checked = {
     "kirbyclash": false,
     "pokexy": false,
     "ykwblasters": false,
+    "miraclecure": false,
+    "rumbleworld": false,
 }
 if(!fs.existsSync("recent.json"))
     fs.writeFileSync("recent.json", JSON.stringify({
         "website": [new Date(0), new Date(0)],
+        "forum": [new Date(0), new Date(0)],
         "accounts": [new Date(0), new Date(0)],
         "conntest": [new Date(0), new Date(0)],
         "juxtweb": [new Date(0), new Date(0)],
         "juxtwebbeta": [new Date(0), new Date(0)],
         "juxt": [new Date(0), new Date(0)],
+        "sssl": [new Date(0), new Date(0)],
         "friends": [new Date(0), new Date(0)],
         "splatoon": [new Date(0), new Date(0)],
         "mk8": [new Date(0), new Date(0)],
@@ -141,6 +151,8 @@ if(!fs.existsSync("recent.json"))
         "kirbyclash": [new Date(0), new Date(0)],
         "pokexy": [new Date(0), new Date(0)],
         "ykwblasters": [new Date(0), new Date(0)],
+        "miraclecure": [new Date(0), new Date(0)],
+        "rumbleworld": [new Date(0), new Date(0)],
     }));
 /** @type {Record<string, [Date, Date]>} */
 let last = JSON.parse(fs.readFileSync("recent.json", "utf-8"));
@@ -163,11 +175,13 @@ const checkOne = async (name, res) => {
 const checkAll = async () => {
     if(process.env.DISABLE_CHECKING) return;
     await checkOne("website", await checkers.checkWebsite());
+    await checkOne("forum", await checkers.checkForum());
     await checkOne("accounts", await checkers.checkAccounts());
     await checkOne("conntest", await checkers.checkConntest());
     await checkOne("juxtweb", await checkers.checkJuxtWeb());
     await checkOne("juxtwebbeta", await checkers.checkJuxtWeb());
     await checkOne("juxt", await checkers.checkJuxt());
+    await checkOne("sssl", await py.call(pymodule, "sssl"));
 
     await checkOne("friends", await py.call(pymodule, "friends", ...argsWiiU));
     await checkOne("splatoon", await py.call(pymodule, "splatoon", ...argsWiiU));
@@ -192,6 +206,8 @@ const checkAll = async () => {
     await checkOne("pokexy", await py.call(pymodule, "pokexy", ...args3DS));
     await checkOne("tippingstars", await py.call(pymodule, "tippingstars", ...args3DS));
     await checkOne("ykwblasters", await py.call(pymodule, "ykwblasters", ...args3DS));
+    await checkOne("miraclecure", await py.call(pymodule, "miraclecure", ...args3DS));
+    await checkOne("rumbleworld", await py.call(pymodule, "rumbleworld", ...args3DS));
 
     fs.writeFileSync("recent.json", JSON.stringify(last));
 };
