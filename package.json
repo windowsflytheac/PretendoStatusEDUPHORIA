@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/Milk-Cool/PretendoStatus#readme",
   "dependencies": {
-    "express": "^4.19.2",
+    "express": "^5.0.0",
     "node-calls-python": "^1.10.0"
   }
 }
