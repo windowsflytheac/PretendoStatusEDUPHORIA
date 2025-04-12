@@ -321,6 +321,16 @@ def rumbleworld(
                     LANGUAGE, DEVICE_CERT, DEVICE_NAME, PID, PID_HMAC, NEX_PASSWORD, 0x0004000000185A00,
                     0, "844f1d0c",
                     30813)
+def acnl(
+        MAC_ADDRESS, SERIAL_NUMBER,
+        REGION_ID,
+        LANGUAGE, DEVICE_CERT, DEVICE_NAME, PID, PID_HMAC, NEX_PASSWORD
+):
+    return check3DS(MAC_ADDRESS, SERIAL_NUMBER,
+                    REGION_ID,
+                    LANGUAGE, DEVICE_CERT, DEVICE_NAME, PID, PID_HMAC, NEX_PASSWORD, 0x0004000000086300,
+                    0, "d6f08b40",
+                    31001)
 
 def sssl():
     r = resolver.Resolver()
