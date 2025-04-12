@@ -1,3 +1,4 @@
 asgiref
 pycryptodomex
 dnspython
+anynet
